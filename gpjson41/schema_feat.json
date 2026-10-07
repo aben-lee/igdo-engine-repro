@@ -1,0 +1,65 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "GPJSON 4.1 Feature (subset used by the IGDO-Engine repro package)",
+  "type": "object",
+  "required": ["gpjson", "type", "properties"],
+  "properties": {
+    "gpjson": {"type": "string", "pattern": "^4\\."},
+    "type": {"const": "Feature"},
+    "id": {"type": ["string", "number"]},
+    "crs": {"type": "string"},
+    "geometry": {"type": "object"},
+    "properties": {
+      "type": "object",
+      "required": ["kind"],
+      "properties": {
+        "kind": {"type": "string", "minLength": 1},
+        "timestamp": {"type": "string"},
+        "source": {"type": "string"},
+        "quality": {
+          "type": "object",
+          "properties": {
+            "completeness": {"type": "number", "minimum": 0, "maximum": 1},
+            "outlierRate": {"type": "number", "minimum": 0, "maximum": 1},
+            "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+            "validity": {"enum": ["valid", "suspect", "invalid"]},
+            "uncertainty": {"type": "object"}
+          }
+        },
+        "pipeline": {
+          "type": "object",
+          "properties": {
+            "eventTime": {"type": "string"},
+            "processingTime": {"type": "string"},
+            "watermark": {"type": "string"},
+            "latencyBudget": {"type": "number", "minimum": 0},
+            "qos": {"type": "object"},
+            "stage": {"type": "object"},
+            "health": {"type": "object"},
+            "lineage": {"type": "array", "items": {"type": "string"}}
+          }
+        },
+        "orch_intent": {
+          "type": "object",
+          "description": "Optional IGDO orchestration extension over GPJSON 4.1; ignorable by 4.1-only consumers.",
+          "properties": {
+            "goal": {"type": "string"},
+            "outcomes": {"type": "array", "items": {"type": "string"}},
+            "constraints": {"type": "object"}
+          }
+        }
+      }
+    },
+    "datasets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type"],
+        "properties": {
+          "type": {"enum": ["Sheet", "NDArray", "Matrix", "Binary", "URI", "Sequence"]},
+          "role": {"type": "string"}
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,149 @@
+# Node Knowledge Graph for the microseismic domain (minimal Phase-2 instance).
+# Each node declares input/output contracts, preconditions over the IGDO
+# state/intent, nominal cost model and performance descriptors -- the fields
+# required by Section V-A of the manuscript.
+version: 1
+domain: microseismic
+
+# Fixed backbone used by the static pipeline.
+backbone:
+  - bandpass_wide
+  - sta_lta_detect
+  - refine_onsets
+  - grid_locate
+  - alert
+
+# Full canonical execution order used by the data-driven planner. The default
+# front-end (bandpass_wide) sits right after its conditional replacement
+# (robust_denoise); the assembler suppresses a node named by a selected node's
+# `replaces` field.
+conditional_order:
+  - gap_repair
+  - event_rate_up
+  - robust_denoise
+  - bandpass_wide
+  - sta_lta_detect
+  - refine_onsets
+  - cross_validate
+  - grid_locate
+  - alert
+
+# Multi-objective scoring configuration (modality-specific).
+scoring:
+  budget_s: 2.0
+  emergency_goal_token: near_boundary
+  emergency_node: event_rate_up
+  protective: [gap_repair, robust_denoise, cross_validate]
+
+default_params:
+  sta_s: 0.10
+  lta_s: 1.0
+  th_on: 3.5
+  th_off: 1.5
+  min_stations: 3
+  assoc_tol_s: 0.25
+  cv_rms_samples: 25.0
+  chunk_s: 1.0
+
+nodes:
+  - id: bandpass_wide
+    category: preprocessing
+    inputs: ["seismic.trace/waveform"]
+    outputs: ["seismic.trace/waveform:bandpassed"]
+    preconditions: []
+    nominal_cost_ms: {base: 6.0, per_k_sample_ch: 0.04}
+    descriptors: {robustness: 0.45, accuracy: 0.6, cost: 0.3}
+
+  - id: bandpass_narrow
+    category: preprocessing
+    inputs: ["seismic.trace/waveform"]
+    outputs: ["seismic.trace/waveform:bandpassed"]
+    preconditions: []
+    nominal_cost_ms: {base: 6.0, per_k_sample_ch: 0.04}
+    descriptors: {robustness: 0.6, accuracy: 0.7, cost: 0.3}
+
+  - id: robust_denoise
+    category: preprocessing
+    inputs: ["seismic.trace/waveform"]
+    outputs: ["seismic.trace/waveform:denoised"]
+    # replaces bandpass_wide when triggered (adaptive narrow-band screening)
+    replaces: bandpass_wide
+    reason: "degraded data -> adaptive narrow-band screening"
+    preconditions:
+      any:
+        - {field: health.estSnrDb, op: "<", value: 8}
+        - {field: quality.confidence, op: "<", value: 0.60}
+        - {field: quality.completeness, op: "<", value: 0.90}
+    nominal_cost_ms: {base: 16.0, per_k_sample_ch: 0.10}
+    descriptors: {robustness: 0.85, accuracy: 0.8, cost: 0.55}
+
+  - id: gap_repair
+    category: conditioning
+    inputs: ["seismic.trace/waveform"]
+    outputs: ["seismic.trace/waveform:repaired", "context:good_channel_mask"]
+    reason: "completeness<0.90 -> exclude dead/noisy channels"
+    preconditions:
+      all:
+        - {field: quality.completeness, op: "<", value: 0.90}
+    nominal_cost_ms: {base: 4.0, per_k_sample_ch: 0.02}
+    descriptors: {robustness: 0.8, accuracy: 0.7, cost: 0.2}
+
+  - id: event_rate_up
+    category: scheduling
+    inputs: ["context:intent"]
+    outputs: ["params:fast_screening"]
+    reason: "high-priority near-boundary goal -> fast screening"
+    preconditions:
+      all:
+        - {field: qos.priority, op: "==", value: "high"}
+        - {field: intent.goal, op: contains, value: "near_boundary"}
+    nominal_cost_ms: {base: 1.0, per_k_sample_ch: 0.0}
+    descriptors: {robustness: 0.7, accuracy: 0.6, cost: 0.1, latency_gain: 0.8}
+
+  - id: sta_lta_detect
+    category: detection
+    inputs: ["seismic.trace/waveform:conditioned"]
+    outputs: ["seismic.event:candidates"]
+    preconditions: []
+    nominal_cost_ms: {base: 10.0, per_k_sample_ch: 0.08}
+    descriptors: {robustness: 0.6, accuracy: 0.75, cost: 0.4}
+
+  - id: refine_onsets
+    category: refinement
+    inputs: ["seismic.trace/waveform", "seismic.event:candidates"]
+    outputs: ["seismic.event:candidates:refined"]
+    # re-pick onsets on wide-banded RAW waveform (AIC): detection band and
+    # location band are separated; mandatory in both pipelines
+    preconditions: []
+    nominal_cost_ms: {base: 3.0, per_k_sample_ch: 0.02}
+    descriptors: {robustness: 0.5, accuracy: 0.9, cost: 0.2}
+
+  - id: cross_validate
+    category: confirmation
+    inputs: ["seismic.event:candidates"]
+    outputs: ["seismic.event:confirmed"]
+    # confirmation accompanies ANY adaptive front-end (low SNR or missing ch.)
+    reason: "degraded data -> velocity-model cross-validation"
+    preconditions:
+      any:
+        - {field: health.estSnrDb, op: "<", value: 8}
+        - {field: quality.confidence, op: "<", value: 0.60}
+        - {field: quality.completeness, op: "<", value: 0.90}
+    nominal_cost_ms: {base: 25.0, per_k_sample_ch: 0.0}
+    descriptors: {robustness: 0.95, accuracy: 0.9, cost: 0.5}
+
+  - id: grid_locate
+    category: location
+    inputs: ["seismic.event:confirmed", "geometry:station_network"]
+    outputs: ["seismic.event:located"]
+    preconditions: []
+    nominal_cost_ms: {base: 30.0, per_k_sample_ch: 0.0}
+    descriptors: {robustness: 0.7, accuracy: 0.75, cost: 0.6}
+
+  - id: alert
+    category: sink
+    inputs: ["seismic.event:located"]
+    outputs: ["mine.alert.event"]
+    preconditions: []
+    nominal_cost_ms: {base: 2.0, per_k_sample_ch: 0.0}
+    descriptors: {robustness: 0.9, accuracy: 0.9, cost: 0.05}

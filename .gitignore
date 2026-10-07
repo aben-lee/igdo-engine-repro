@@ -1,0 +1,49 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+.installed.cfg
+*.egg
+
+# ---- virtual environments ----
+.venv/
+venv/
+env/
+ENV/
+
+# ---- testing / coverage ----
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.mypy_cache/
+.ruff_cache/
+
+# ---- Jupyter ----
+.ipynb_checkpoints/
+
+# ---- OS / editors ----
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
+
+# ---- generated payloads that should stay out of git (keep examples/*.json) ----
+*.npy
+*.npz
+# uncomment if large generated figures/CSVs are rebuilt on demand:
+# results/*.png
+
+# ---- local scratch / diagnostics ----
+*.log
+tmp/
+scratch/

@@ -1,0 +1,166 @@
+# Node Knowledge Graph for the InSAR domain (cross-modality instance).
+# Structurally identical in role to nodes_microseismic.yaml: a fixed backbone
+# plus conditional nodes gated on the COMMON state/intent vocabulary, with
+# InSAR-specific health indicators (meanCoherence, coverage).
+version: 1
+domain: insar
+
+# Fixed backbone used by the static pipeline.
+backbone:
+  - coh_mask
+  - per_pixel_rate
+  - threshold_detect
+  - alert
+
+# Full canonical execution order used by the data-driven planner.
+conditional_order:
+  - investigation_rate_up
+  - coh_mask
+  - gap_repair_insar
+  - per_pixel_rate
+  - spatial_filter
+  - threshold_detect
+  - temporal_persist_check
+  - mogi_cross_validate
+  - mogi_inversion
+  - alert
+
+# Multi-objective scoring (InSAR latency budget is daily, not a screening SLA)
+scoring:
+  budget_s: 86400.0
+  emergency_goal_token: anomaly_confirmation
+  emergency_node: investigation_rate_up
+  protective: [gap_repair_insar, spatial_filter,
+               temporal_persist_check, mogi_cross_validate]
+
+default_params:
+  gate: 0.35
+  rate_gate_mm_yr: 20.0
+  min_cluster_pixels: 40
+  spatial_sigma_px: 3.0
+  gap_epoch_frac: 0.6
+  persist_r2: 0.60
+  persist_frac: 0.50
+  mogi_search_m: 180.0
+  mogi_fit_win_m: 750.0
+  depth_min_m: 300.0
+  depth_max_m: 1100.0
+  depth_step_m: 100.0
+  mogi_residual_gate: 0.55
+
+nodes:
+  - id: coh_mask
+    category: conditioning
+    inputs: ["insar.deformation/coherence"]
+    outputs: ["context:valid_pixel_mask"]
+    preconditions: []
+    nominal_cost_ms: {base: 2.0, per_k_sample_ch: 0.01}
+    descriptors: {robustness: 0.5, accuracy: 0.6, cost: 0.2}
+
+  - id: gap_repair_insar
+    category: conditioning
+    inputs: ["insar.deformation/coherence"]
+    outputs: ["context:valid_pixel_mask:tightened"]
+    reason: "coverage<0.90 -> epoch-consistent mask, remove speckle voids"
+    preconditions:
+      all:
+        - {field: quality.completeness, op: "<", value: 0.90}
+    nominal_cost_ms: {base: 3.0, per_k_sample_ch: 0.01}
+    descriptors: {robustness: 0.8, accuracy: 0.7, cost: 0.2}
+
+  - id: spatial_filter
+    category: preprocessing
+    inputs: ["insar.deformation/los_rate"]
+    outputs: ["insar.deformation/los_rate:filtered"]
+    reason: "low coherence/outliers -> edge-preserving spatial filter"
+    preconditions:
+      any:
+        - {field: health.meanCoherence, op: "<", value: 0.75}
+        - {field: quality.outlierRate, op: ">", value: 0.20}
+        - {field: quality.confidence, op: "<", value: 0.60}
+    nominal_cost_ms: {base: 8.0, per_k_sample_ch: 0.02}
+    descriptors: {robustness: 0.85, accuracy: 0.8, cost: 0.4}
+
+  - id: investigation_rate_up
+    category: scheduling
+    inputs: ["context:intent"]
+    outputs: ["params:investigation_cadence"]
+    reason: "high-priority anomaly confirmation -> denser revisit / ascent task"
+    preconditions:
+      all:
+        - {field: qos.priority, op: "==", value: "high"}
+        - {field: intent.goal, op: contains, value: "anomaly_confirmation"}
+    nominal_cost_ms: {base: 1.0, per_k_sample_ch: 0.0}
+    descriptors: {robustness: 0.7, accuracy: 0.6, cost: 0.1, latency_gain: 0.8}
+
+  - id: per_pixel_rate
+    category: estimation
+    inputs: ["insar.deformation/los_displacement"]
+    outputs: ["insar.deformation/los_rate"]
+    preconditions: []
+    nominal_cost_ms: {base: 5.0, per_k_sample_ch: 0.02}
+    descriptors: {robustness: 0.6, accuracy: 0.75, cost: 0.3}
+
+  - id: threshold_detect
+    category: detection
+    inputs: ["insar.deformation/los_rate"]
+    outputs: ["insar.deformation:candidates"]
+    preconditions: []
+    nominal_cost_ms: {base: 3.0, per_k_sample_ch: 0.01}
+    descriptors: {robustness: 0.55, accuracy: 0.7, cost: 0.3}
+
+  - id: temporal_persist_check
+    category: confirmation
+    inputs: ["insar.deformation:candidates"]
+    outputs: ["insar.deformation:candidates:persistent"]
+    reason: "adaptive front-end or confirmation goal -> temporal persistence"
+    preconditions:
+      any:
+        - {field: quality.completeness, op: "<", value: 0.90}
+        - {field: health.meanCoherence, op: "<", value: 0.75}
+        - {field: quality.outlierRate, op: ">", value: 0.20}
+        - {field: quality.confidence, op: "<", value: 0.60}
+        - {field: intent.goal, op: contains, value: "anomaly_confirmation"}
+        - {field: intent.goal, op: contains, value: "twin_assimilation"}
+    nominal_cost_ms: {base: 5.0, per_k_sample_ch: 0.01}
+    descriptors: {robustness: 0.9, accuracy: 0.85, cost: 0.3}
+
+  - id: mogi_cross_validate
+    category: confirmation
+    inputs: ["insar.deformation:candidates", "geometry:grid"]
+    outputs: ["insar.deformation:candidates:mogi_confirmed"]
+    reason: "adaptive front-end or confirmation goal -> Mogi morphology check"
+    preconditions:
+      any:
+        - {field: quality.completeness, op: "<", value: 0.90}
+        - {field: health.meanCoherence, op: "<", value: 0.75}
+        - {field: quality.outlierRate, op: ">", value: 0.20}
+        - {field: quality.confidence, op: "<", value: 0.60}
+        - {field: intent.goal, op: contains, value: "anomaly_confirmation"}
+        - {field: intent.goal, op: contains, value: "twin_assimilation"}
+    nominal_cost_ms: {base: 50.0, per_k_sample_ch: 0.0}
+    descriptors: {robustness: 0.95, accuracy: 0.9, cost: 0.6}
+
+  - id: mogi_inversion
+    category: inversion
+    inputs: ["insar.deformation:candidates:mogi_confirmed"]
+    outputs: ["insar.source:mogi", "hazard:volume"]
+    reason: "confirmed candidate -> Mogi source parameter inversion"
+    preconditions:
+      any:
+        - {field: quality.completeness, op: "<", value: 0.90}
+        - {field: health.meanCoherence, op: "<", value: 0.75}
+        - {field: quality.outlierRate, op: ">", value: 0.20}
+        - {field: quality.confidence, op: "<", value: 0.60}
+        - {field: intent.goal, op: contains, value: "anomaly_confirmation"}
+        - {field: intent.goal, op: contains, value: "twin_assimilation"}
+    nominal_cost_ms: {base: 20.0, per_k_sample_ch: 0.0}
+    descriptors: {robustness: 0.9, accuracy: 0.9, cost: 0.5}
+
+  - id: alert
+    category: sink
+    inputs: ["insar.deformation:candidates"]
+    outputs: ["mine.alert.deformation"]
+    preconditions: []
+    nominal_cost_ms: {base: 1.0, per_k_sample_ch: 0.0}
+    descriptors: {robustness: 0.9, accuracy: 0.9, cost: 0.05}

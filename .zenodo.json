@@ -1,0 +1,36 @@
+{
+  "_comment": "Optional Zenodo metadata so the GitHub-release archive gets the correct title, license and author order. TODO: fill <...> placeholders; verify authors/ORCIDs; create this file on the default branch BEFORE flipping the Zenodo switch. Safe to delete if you prefer to edit metadata in the Zenodo UI after archiving.",
+  "title": "igdo-engine-repro: minimal reproducible orchestration kernel for Intelligent Geo-Data Objects (IGDO) — companion code for GRSM-2026-00141",
+  "description": "Fixed-seed, one-command reproducible Python subset of the IGDO-Engine orchestration kernel: microseismic (S1/S2) and InSAR Mogi cross-modality experiments, intent-driven re-planning, and planner scalability; static vs. state/intent-aware pipelines over the same node implementations.",
+  "upload_type": "software",
+  "license": "BSD-3-Clause",
+  "version": "1.0.0",
+  "language": "eng",
+  "keywords": [
+    "geophysical monitoring",
+    "digital twin",
+    "workflow orchestration",
+    "GPJSON",
+    "GeoJSON",
+    "microseismic",
+    "InSAR",
+    "Mogi",
+    "knowledge graph",
+    "reproducible research"
+  ],
+  "creators": [
+    { "name": "Luo, Zijing", "affiliation": "Henan Polytechnic University" },
+    { "name": "Yu, Xiao", "affiliation": "Henan Polytechnic University" },
+    { "name": "Cui, Shaobei", "affiliation": "Henan Polytechnic University" },
+    { "name": "Jin, Shuanggen" },
+    { "name": "Li, Xiaobin", "affiliation": "Henan Polytechnic University" }
+  ],
+  "related_identifiers": [
+    {
+      "relation": "isSupplementTo",
+      "identifier": "https://github.com/<github-owner>/igdo-engine-repro",
+      "resource_type": "software"
+    }
+  ],
+  "access_right": "open"
+}
