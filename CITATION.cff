@@ -1,12 +1,12 @@
 # CITATION.cff — rendered by GitHub ("Cite this repository") and reused in the ScienceDB code record.
-# TODO before release: verify affiliations (esp. S. Jin), add ORCIDs, set the
-# actual date-released, and paste the ScienceDB DOI after the record is approved.
+# Affiliations/emails taken verbatim from the manuscript author block.
+# TODO before release: add ORCIDs if available, set date-released, paste ScienceDB DOI.
 cff-version: 1.2.0
 message: "If you use this software, please cite the archived code and the article."
 title: "igdo-engine-repro: a minimal reproducible orchestration kernel for Intelligent Geo-Data Objects (IGDO)"
 version: 1.0.0
 date-released: 2026-10-15          # TODO: actual ScienceDB publication date
-# doi: 10.57760/sciencedb.XXXXX    # TODO: DOI allocated by ScienceDB (use the exact prefix/suffix given; new records commonly use 10.57760)
+# doi: 10.57760/sciencedb.XXXXX    # TODO: DOI allocated by ScienceDB (use the exact prefix/suffix given)
 repository-artifact: "https://doi.org/10.57760/sciencedb.XXXXX"   # TODO: ScienceDB DOI for v1.0.0
 repository-code: "https://github.com/aben-lee/igdo-engine-repro"
 url: "https://github.com/aben-lee/igdo-engine-repro"
@@ -22,23 +22,27 @@ keywords:
   - knowledge graph
   - reproducible research
 authors:
-  # Author order per manuscript: X. Li is first and corresponding author.
+  # Author order and affiliations per manuscript; X. Li is corresponding author.
   - family-names: Li
     given-names: Xiaobin
-    affiliation: Henan Polytechnic University
-    # orcid: https://orcid.org/0000-0000-0000-0000   # first & corresponding author
+    email: alxb98@126.com
+    affiliation: School of Resources and Environment, Henan Polytechnic University, Jiaozuo 454000, China
   - family-names: Luo
     given-names: Zijing
-    affiliation: Henan Polytechnic University
+    email: 10460231462@hpu.edu.cn
+    affiliation: School of Resources and Environment, Henan Polytechnic University, Jiaozuo 454000, China
   - family-names: Yu
     given-names: Xiao
-    affiliation: Henan Polytechnic University
+    email: 2834119156@qq.com
+    affiliation: Key Laboratory of Metallogeny and Mineral Assessment, Ministry of Natural Resources; Institute of Mineral Resources, Chinese Academy of Geological Sciences, Beijing 100037, China
   - family-names: Cui
     given-names: Shaobei
-    affiliation: Henan Polytechnic University
+    email: 395579229@qq.com
+    affiliation: Chongqing Research Institute Co., Ltd., China Coal Technology and Engineering Group, Chongqing 400039, China
   - family-names: Jin
     given-names: Shuanggen
-    affiliation: ""          # TODO: verify against the manuscript (may differ from HPU)
+    email: sgjin@hpu.edu.cn
+    affiliation: School of Resources and Environment, Henan Polytechnic University, Jiaozuo 454000, China
 preferred-citation:
   type: article
   title: "Autonomous Geophysical Monitoring for Infrastructure Digital Twins with Intelligent Geo-Data and Self-organizing Pipelines"
@@ -56,7 +60,3 @@ preferred-citation:
   journal: IEEE Geoscience and Remote Sensing Magazine
   year: 2026
   # doi: 10.1109/XXXX.XXXXXXX     # TODO after acceptance
-  # start: 2026
-  # volume: ...
-  # issue: ...
-  # pages: ...
