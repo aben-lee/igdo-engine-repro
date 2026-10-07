@@ -1,17 +1,15 @@
 # CITATION.cff — rendered by GitHub ("Cite this repository") and read by Zenodo.
-# TODO (before the public release): fill every "<...>" placeholder, set the
-# exact author order/affiliations/ORCIDs as in the published manuscript, and
-# after the Zenodo archive is created either paste the Zenodo DOI below or
-# delete the commented doi line (Zenodo will mint it from GitHub automatically).
+# TODO before public release: verify affiliations (esp. S. Jin), add ORCIDs,
+# set the actual date-released, and paste the Zenodo DOI after archiving.
 cff-version: 1.2.0
 message: "If you use this software, please cite the archived code and the article."
 title: "igdo-engine-repro: a minimal reproducible orchestration kernel for Intelligent Geo-Data Objects (IGDO)"
 version: 1.0.0
-date-released: 2026-10-15          # TODO: actual release (tag) date
-# doi: 10.5281/zenodo.XXXXXXX       # TODO: minted by Zenodo for the v1.0.0 release
+date-released: 2026-10-15          # TODO: actual release (Publish) date
+# doi: 10.5281/zenodo.XXXXXXX       # TODO: version DOI minted by Zenodo for v1.0.0
 repository-artifact: "https://doi.org/10.5281/zenodo.XXXXXXX"   # TODO
-repository-code: "https://github.com/<github-owner>/igdo-engine-repro"   # TODO
-url: "https://github.com/<github-owner>/igdo-engine-repro"               # TODO
+repository-code: "https://github.com/aben-lee/igdo-engine-repro"
+url: "https://github.com/aben-lee/igdo-engine-repro"
 license: BSD-3-Clause
 keywords:
   - geophysical monitoring
@@ -24,11 +22,14 @@ keywords:
   - knowledge graph
   - reproducible research
 authors:
-  # TODO: reorder to match the manuscript exactly; verify affiliations and add ORCIDs.
+  # Author order per manuscript: X. Li is first and corresponding author.
+  - family-names: Li
+    given-names: Xiaobin
+    affiliation: Henan Polytechnic University
+    # orcid: https://orcid.org/0000-0000-0000-0000   # first & corresponding author
   - family-names: Luo
     given-names: Zijing
     affiliation: Henan Polytechnic University
-    # orcid: https://orcid.org/0000-0000-0000-0000
   - family-names: Yu
     given-names: Xiao
     affiliation: Henan Polytechnic University
@@ -37,15 +38,13 @@ authors:
     affiliation: Henan Polytechnic University
   - family-names: Jin
     given-names: Shuanggen
-    affiliation: ""          # TODO: verify (may differ from HPU)
-  - family-names: Li
-    given-names: Xiaobin
-    affiliation: Henan Polytechnic University
-    # orcid: https://orcid.org/0000-0000-0000-0000
+    affiliation: ""          # TODO: verify against the manuscript (may differ from HPU)
 preferred-citation:
   type: article
   title: "Autonomous Geophysical Monitoring for Infrastructure Digital Twins with Intelligent Geo-Data and Self-organizing Pipelines"
   authors:
+    - family-names: Li
+      given-names: Xiaobin
     - family-names: Luo
       given-names: Zijing
     - family-names: Yu
@@ -54,8 +53,6 @@ preferred-citation:
       given-names: Shaobei
     - family-names: Jin
       given-names: Shuanggen
-    - family-names: Li
-      given-names: Xiaobin
   journal: IEEE Geoscience and Remote Sensing Magazine
   year: 2026
   # doi: 10.1109/XXXX.XXXXXXX     # TODO after acceptance
