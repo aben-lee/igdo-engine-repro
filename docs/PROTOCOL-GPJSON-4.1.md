@@ -613,9 +613,10 @@ f = (GPJSONBuilder("insar.deformation", "insar_demo_0007", crs="local:demo_grid"
 
 ## 15. Citation
 
-Please cite both the companion article and the archived code. Citation metadata is maintained in `../CITATION.cff`; the Zenodo DOI and repository URL are filled in at release and reproduced here:
+Please cite both the companion article and the archived code. Citation metadata is maintained in `../CITATION.cff`; the ScienceDB DOI/CSTR and repository URL are filled in once the record is approved and reproduced here:
 
-- Code: `https://doi.org/10.5281/zenodo.XXXXXXX` (placeholder; minted at the v1.0.0 release)
+- Code (Science Data Bank, record type *code*): `https://doi.org/10.57760/sciencedb.XXXXX` (placeholder; allocated by ScienceDB at publication; use the exact DOI given)
+- CSTR: `https://cstr.cn/31253.11.sciencedb.XXXXX` (placeholder)
 - Repository: `https://github.com/aben-lee/igdo-engine-repro`
 
 *This specification document is licensed under CC-BY-4.0; the reference code is licensed under the BSD 3-Clause License.*

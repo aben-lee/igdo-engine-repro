@@ -354,14 +354,16 @@ and other real-data sample ingestion.
 
 ## 8. Code availability, archival and citation
 
-The exact version used for the manuscript is archived at Zenodo, and the
-development repository is on GitHub:
+The exact version used for the manuscript is permanently archived as a **code**
+record on **Science Data Bank (ScienceDB)** and mirrored on GitHub:
 
-* Archived release **v1.0.0** (citable DOI): `https://doi.org/10.5281/zenodo.XXXXXXX`  <!-- TODO -->
-* Source repository: `https://github.com/<github-owner>/igdo-engine-repro`  <!-- TODO -->
+* Archived release **v1.0.0**, DOI: `https://doi.org/10.57760/sciencedb.XXXXX`
+  (placeholder; the DOI/CSTR are allocated by ScienceDB after curation)
+* CSTR: `https://cstr.cn/31253.11.sciencedb.XXXXX` (placeholder)
+* Source repository: `https://github.com/aben-lee/igdo-engine-repro`
 
-During peer review, a frozen, anonymous snapshot is provided at
-`<ANONYMOUS-REVIEW-URL>` (no login required); the public GitHub/Zenodo record
-is activated upon acceptance. The code is released under the BSD 3-Clause
-License (see `LICENSE`). Please cite both the archived code (Zenodo DOI) and
-the article; citation metadata is provided in `CITATION.cff`.
+At submission, ScienceDB creates a private read-only link that can be shared
+with reviewers during peer review; the GitHub repository is already public. The
+code is released under the BSD 3-Clause License (see `LICENSE`). Please cite both
+the archived code (ScienceDB DOI) and the article; citation metadata is in
+`CITATION.cff`.

@@ -1,13 +1,13 @@
-# CITATION.cff — rendered by GitHub ("Cite this repository") and read by Zenodo.
-# TODO before public release: verify affiliations (esp. S. Jin), add ORCIDs,
-# set the actual date-released, and paste the Zenodo DOI after archiving.
+# CITATION.cff — rendered by GitHub ("Cite this repository") and reused in the ScienceDB code record.
+# TODO before release: verify affiliations (esp. S. Jin), add ORCIDs, set the
+# actual date-released, and paste the ScienceDB DOI after the record is approved.
 cff-version: 1.2.0
 message: "If you use this software, please cite the archived code and the article."
 title: "igdo-engine-repro: a minimal reproducible orchestration kernel for Intelligent Geo-Data Objects (IGDO)"
 version: 1.0.0
-date-released: 2026-10-15          # TODO: actual release (Publish) date
-# doi: 10.5281/zenodo.XXXXXXX       # TODO: version DOI minted by Zenodo for v1.0.0
-repository-artifact: "https://doi.org/10.5281/zenodo.XXXXXXX"   # TODO
+date-released: 2026-10-15          # TODO: actual ScienceDB publication date
+# doi: 10.57760/sciencedb.XXXXX    # TODO: DOI allocated by ScienceDB (use the exact prefix/suffix given; new records commonly use 10.57760)
+repository-artifact: "https://doi.org/10.57760/sciencedb.XXXXX"   # TODO: ScienceDB DOI for v1.0.0
 repository-code: "https://github.com/aben-lee/igdo-engine-repro"
 url: "https://github.com/aben-lee/igdo-engine-repro"
 license: BSD-3-Clause
