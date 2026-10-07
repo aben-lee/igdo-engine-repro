@@ -1,16 +1,21 @@
 # CITATION.cff — rendered by GitHub ("Cite this repository") and reused in the ScienceDB code record.
 # Affiliations/emails taken verbatim from the manuscript author block.
-# TODO before release: add ORCIDs if available, set date-released, paste ScienceDB DOI.
+# DOI/CSTR assigned by ScienceDB on submission (2026-10-07); the DOI activates after curation review.
+# TODO: add ORCIDs if the authors register them.
 cff-version: 1.2.0
 message: "If you use this software, please cite the archived code and the article."
 title: "igdo-engine-repro: a minimal reproducible orchestration kernel for Intelligent Geo-Data Objects (IGDO)"
 version: 1.0.0
-date-released: 2026-10-15          # TODO: actual ScienceDB publication date
-# doi: 10.57760/sciencedb.XXXXX    # TODO: DOI allocated by ScienceDB (use the exact prefix/suffix given)
-repository-artifact: "https://doi.org/10.57760/sciencedb.XXXXX"   # TODO: ScienceDB DOI for v1.0.0
+date-released: 2026-10-07            # ScienceDB submission date; update if the activation/publication date differs
+doi: 10.57760/sciencedb.014tw
+repository-artifact: "https://doi.org/10.57760/sciencedb.014tw"
 repository-code: "https://github.com/aben-lee/igdo-engine-repro"
 url: "https://github.com/aben-lee/igdo-engine-repro"
 license: BSD-3-Clause
+identifiers:
+  - type: url
+    value: "https://cstr.cn/31253.11.sciencedb.014tw"
+    description: CSTR persistent identifier for the ScienceDB code record
 keywords:
   - geophysical monitoring
   - digital twin

@@ -357,9 +357,8 @@ and other real-data sample ingestion.
 The exact version used for the manuscript is permanently archived as a **code**
 record on **Science Data Bank (ScienceDB)** and mirrored on GitHub:
 
-* Archived release **v1.0.0**, DOI: `https://doi.org/10.57760/sciencedb.XXXXX`
-  (placeholder; the DOI/CSTR are allocated by ScienceDB after curation)
-* CSTR: `https://cstr.cn/31253.11.sciencedb.XXXXX` (placeholder)
+* Archived release **v1.0.0**, DOI: `https://doi.org/10.57760/sciencedb.014tw`
+* CSTR: `https://cstr.cn/31253.11.sciencedb.014tw`
 * Source repository: `https://github.com/aben-lee/igdo-engine-repro`
 
 At submission, ScienceDB creates a private read-only link that can be shared

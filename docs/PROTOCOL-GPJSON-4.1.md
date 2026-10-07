@@ -613,10 +613,10 @@ f = (GPJSONBuilder("insar.deformation", "insar_demo_0007", crs="local:demo_grid"
 
 ## 15. Citation
 
-Please cite both the companion article and the archived code. Citation metadata is maintained in `../CITATION.cff`; the ScienceDB DOI/CSTR and repository URL are filled in once the record is approved and reproduced here:
+Please cite both the companion article and the archived code. Citation metadata is maintained in `../CITATION.cff`. Persistent identifiers for the code record (allocated by ScienceDB on submission; the DOI is activated after curation review):
 
-- Code (Science Data Bank, record type *code*): `https://doi.org/10.57760/sciencedb.XXXXX` (placeholder; allocated by ScienceDB at publication; use the exact DOI given)
-- CSTR: `https://cstr.cn/31253.11.sciencedb.XXXXX` (placeholder)
+- Code (Science Data Bank, record type *code*): `https://doi.org/10.57760/sciencedb.014tw`
+- CSTR: `https://cstr.cn/31253.11.sciencedb.014tw`
 - Repository: `https://github.com/aben-lee/igdo-engine-repro`
 
 *This specification document is licensed under CC-BY-4.0; the reference code is licensed under the BSD 3-Clause License.*
